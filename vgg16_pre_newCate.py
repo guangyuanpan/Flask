@@ -41,7 +41,7 @@ def img_cate(filename):
     top_model.add(Dense(4, activation='softmax'))
 
     model = Model(inputs=base_model.input, outputs=top_model(base_model.output))
-    model.load_weights('./Trans__mixedC4.h5')
+    model.load_weights('./Trans__mixedC4_FTSepa_2.h5')
 
     # test on validation
     img_path = str('./uploadFile/') + str(filename)
