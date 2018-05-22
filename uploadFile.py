@@ -2,11 +2,11 @@ import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
 from tensorflow.python.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.python.keras import optimizers
-from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.models import Model
-from tensorflow.python.keras.layers import Dropout, Flatten, Dense
-from tensorflow.python.keras.callbacks import Callback,TensorBoard
+from keras import optimizers
+from keras.models import Sequential
+from keras.models import Model
+from keras.layers import Dropout, Flatten, Dense
+from keras.callbacks import Callback,TensorBoard
 import matplotlib.pyplot
 import matplotlib.pyplot as plt
 from PIL import ImageFile
@@ -24,7 +24,7 @@ import scipy
 from flask import Flask, request, redirect, url_for
 from flask import send_from_directory
 from werkzeug.utils import secure_filename
-import vgg16_pre_newCate
+import Pretrained_ResNet
 
 
 UPLOAD_FOLDER = './uploadFile'
@@ -97,7 +97,7 @@ def uploaded_file(filename):
 @app.route('/runjob/<filename>')
 def run_job(filename):
 
-    Category,FC_predict = vgg16_pre_newCate.img_cate(filename)
+    Category,FC_predict = Pretrained_ResNet.img_cate(filename)
     a = '%.2f%%' % (FC_predict[0][0] * 100)
     b = '%.2f%%' % (FC_predict[0][1] * 100)
     c = '%.2f%%' % (FC_predict[0][2] * 100)
@@ -126,3 +126,6 @@ def run_job(filename):
     </table></p>
     </body>
     '''.format(url_for('run_job', filename=filename), url_for('upload_file', filename=filename), url_for('uploaded_file', filename=filename), Category, a, b, c, d)
+
+if __name__ == '__main__':
+    app.run()
